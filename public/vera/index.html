@@ -1097,7 +1097,15 @@
 
             // Footer links
             document.getElementById('verification-link').href = token.verification_url;
-            document.getElementById('blockchain-link').href = token.blockchain_url;
+
+            // Hide blockchain link if it's a placeholder (contains "0x...")
+            const blockchainLink = document.getElementById('blockchain-link');
+            if (token.blockchain_url && !token.blockchain_url.includes('0x...')) {
+                blockchainLink.href = token.blockchain_url;
+            } else {
+                blockchainLink.style.display = 'none';
+            }
+
             if (token.socarxiv_url) {
                 document.getElementById('socarxiv-link').href = token.socarxiv_url;
             } else {
