@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">VERA Token Detail | VitalGnosis Research</title>
+
+    <!-- SEO Meta Tags (dynamically populated) -->
+    <meta name="description" id="meta-description"
+        content="Validated research token from the VERA ecosystem - Synthesizing Biological Vitality with Digital Truth">
+    <meta name="keywords" id="meta-keywords"
+        content="research validation, reproducibility, VERA tokens, health science, validator ecosystem">
+    <meta name="author" content="VitalGnosis Research Team">
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:title" id="og-title" content="VERA Token Detail">
+    <meta property="og:description" id="og-description" content="Validated research from the VERA ecosystem">
+    <meta property="og:url" id="og-url" content="https://vitalgnosis.com/vera/">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://vitalgnosis.com/images/vera-token-social.png">
+    <meta property="og:site_name" content="VitalGnosis VERA">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitter-title" content="VERA Token Detail">
+    <meta name="twitter:description" id="twitter-description" content="Validated research from VERA">
+    <meta name="twitter:image" content="https://vitalgnosis.com/images/vera-token-social.png">
+
+    <!-- Schema.org Structured Data (populated by JavaScript) -->
+    <script type="application/ld+json" id="schema-data">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": "Loading...",
+      "author": {
+        "@type": "Organization",
+        "name": "VitalGnosis Research Team"
+      }
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --background: #ffffff;
+            --surface: #f9fafb;
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--background);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Header/Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 60px 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .token-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .confidence-badge {
+            background: var(--success-color);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .meta-pill {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-active {
+            background: var(--success-color);
+        }
+
+        .status-pending {
+            background: var(--warning-color);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Quick Stats Bar */
+        .stats-bar {
+            background: var(--surface);
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 15px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Sections */
+        .content {
+            padding: 60px 0;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .section-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        /* Key Findings Cards */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .finding-card {
+            background: var(--surface);
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .finding-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .finding-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .finding-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Citation Generator */
+        .citation-container {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .citation-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .citation-tab {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .citation-tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .citation-tab:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .citation-content {
+            position: relative;
+        }
+
+        .citation-text {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .copy-button {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .copy-success {
+            display: none;
+            color: var(--success-color);
+            font-weight: 500;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .copy-success.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Reproducibility Package */
+        .package-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .package-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .package-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Forms */
+        .form-container {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Related Tokens */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .related-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--primary-color);
+        }
+
+        .related-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .related-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--surface);
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        .ecosystem-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 50px 0;
+            margin-top: 60px;
+        }
+
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .ecosystem-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ecosystem-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #60a5fa;
+        }
+
+        .ecosystem-card p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .share-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 40px;
+        }
+
+        .mb-4 {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading State -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <span>Loading token details...</span>
+    </div>
+
+    <!-- Main Content (hidden until loaded) -->
+    <div id="main-content" class="hidden">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="container">
+                <div class="token-badge">
+                    <span id="token-id">VERA-M000-20260101</span>
+                    <span class="confidence-badge" id="confidence">98%</span>
+                </div>
+
+                <h1 id="token-title">Loading...</h1>
+
+                <div class="hero-meta">
+                    <span class="meta-pill" id="domain-pill">Domain</span>
+                    <span class="meta-pill" id="subdomain-pill">Subdomain</span>
+                    <span class="meta-pill status-active" id="status-pill">Active</span>
+                    <span class="meta-pill" id="stake-pill">5000 VERA Staked</span>
+                </div>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="scrollToSection('citation')">
+                        📋 Cite This Work
+                    </button>
+                    <a class="btn btn-secondary" id="pdf-download" href="#" target="_blank">
+                        📥 Download PDF
+                    </a>
+                    <button class="btn btn-secondary" onclick="scrollToSection('request-access')">
+                        🔓 Request Access
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Bar -->
+        <div class="stats-bar">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-confidence">98%</span>
+                        <span class="stat-label">Confidence</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-stake">5,000</span>
+                        <span class="stat-label">VERA Staked</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-status">Active</span>
+                        <span class="stat-label">Status</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="stat-reproducibility">95</span>
+                        <span class="stat-label">Reproducibility</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="container">
+                <!-- Abstract Section -->
+                <section class="section">
+                    <h2 class="section-title">Abstract</h2>
+                    <div class="section-content" id="description"></div>
+                </section>
+
+                <!-- Methodology Section -->
+                <section class="section">
+                    <h2 class="section-title">Methodology</h2>
+                    <div class="section-content" id="methodology"></div>
+                </section>
+
+                <!-- Key Findings Section -->
+                <section class="section">
+                    <h2 class="section-title">Key Findings</h2>
+                    <div class="findings-grid" id="findings-grid"></div>
+                </section>
+
+                <!-- Citation Generator Section -->
+                <section class="section" id="citation">
+                    <h2 class="section-title">Cite This Work</h2>
+                    <p class="section-content">Generate properly formatted citations for this research token:</p>
+
+                    <div class="citation-container">
+                        <div class="citation-tabs">
+                            <button class="citation-tab active" data-format="apa"
+                                onclick="switchCitationFormat('apa')">APA</button>
+                            <button class="citation-tab" data-format="bibtex"
+                                onclick="switchCitationFormat('bibtex')">BibTeX</button>
+                            <button class="citation-tab" data-format="mla"
+                                onclick="switchCitationFormat('mla')">MLA</button>
+                            <button class="citation-tab" data-format="chicago"
+                                onclick="switchCitationFormat('chicago')">Chicago</button>
+                        </div>
+
+                        <div class="citation-content">
+                            <div class="citation-text" id="citation-text"></div>
+                            <button class="btn btn-primary copy-button" onclick="copyCitation()">
+                                📋 Copy to Clipboard
+                            </button>
+                            <div class="copy-success" id="copy-success">✓ Citation copied to clipboard!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Reproducibility Package Section -->
+                <section class="section">
+                    <h2 class="section-title">Reproducibility Package</h2>
+                    <p class="section-content">This token includes the following materials for validation and
+                        reproduction:</p>
+
+                    <div class="package-list" id="package-list"></div>
+
+                    <button class="btn btn-primary mt-4" onclick="scrollToSection('request-access')">
+                        Request Full Package
+                    </button>
+                </section>
+
+                <!-- NFT Benefits Section -->
+                <section class="section">
+                    <h2 class="section-title">NFT Holder Benefits</h2>
+                    <p class="section-content">Minting this token as an NFT provides exclusive access and establishes
+                        your role in the validator ecosystem:</p>
+                    <div class="package-list" id="nft-benefits-list"></div>
+                    <div
+                        style="background: rgba(96, 165, 250, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #60a5fa; margin-top: 30px;">
+                        <p style="color: var(--text-secondary); line-height: 1.7;">
+                            <strong>Future Integration:</strong> NFT holders will gain priority access to the Unified
+                            Vitality Framework when it launches—a proprietary bridge connecting validated research
+                            participation with behavioral health insights. Early supporters secure their position in the
+                            convergence of knowledge and validation.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Request Access Form -->
+                <section class="section" id="request-access">
+                    <h2 class="section-title">Request Reproducibility Package</h2>
+
+                    <div class="form-container">
+                        <form id="repro-request-form" onsubmit="submitReproRequest(event)">
+                            <div class="form-group">
+                                <label class="form-label" for="request-email">Academic Email *</label>
+                                <input class="form-input" type="email" id="request-email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="request-name">Name *</label>
+                                <input class="form-input" type="text" id="request-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="request-institution">Institution</label>
+                                <input class="form-input" type="text" id="request-institution">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="request-purpose">Purpose *</label>
+                                <select class="form-select" id="request-purpose" required>
+                                    <option value="">Select purpose...</option>
+                                    <option value="validation">Reproduce results</option>
+                                    <option value="extension">Extend research</option>
+                                    <option value="education">Educational use</option>
+                                    <option value="commercial">Commercial application</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="request-message">Brief Description *</label>
+                                <textarea class="form-textarea" id="request-message" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                Submit Request
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Related Tokens Section -->
+                <section class="section">
+                    <h2 class="section-title">Related Research Tokens</h2>
+                    <p class="section-content">Explore more validated research in this domain:</p>
+                    <div class="related-grid" id="related-tokens"></div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Ecosystem Context Banner -->
+        <div class="ecosystem-banner">
+            <div class="container">
+                <h2 style="font-size: 2rem; margin-bottom: 20px; text-align: center;">
+                    The Architecture of Emergent Value
+                </h2>
+                <p
+                    style="text-align: center; font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto 40px;">
+                    Synthesizing Biological Vitality with Digital Truth. VitalGnosis is an integrated knowledge platform
+                    and validator ecosystem dedicated to the architecture of informed living.
+                </p>
+
+                <div class="ecosystem-grid">
+                    <div class="ecosystem-card">
+                        <h3>📚 Knowledge: The Health Sciences</h3>
+                        <p>
+                            Explore the deep biogenic origins of health. From the biochemistry of nutrition to the
+                            semiotics of behavioral wellness, we provide "Gnosis" for the modern human.
+                        </p>
+                    </div>
+
+                    <div class="ecosystem-card">
+                        <h3>🔒 Validation: The VERA System</h3>
+                        <p>
+                            A mission-driven validator ecosystem built on the principles of transparency and
+                            high-performance architecture. Securing research integrity, rewarding the community.
+                        </p>
+                    </div>
+
+                    <div class="ecosystem-card"
+                        style="grid-column: 1 / -1; background: rgba(96, 165, 250, 0.1); border-color: rgba(96, 165, 250, 0.3);">
+                        <h3 style="color: #60a5fa;">⚡ The Unified Vitality Framework</h3>
+                        <p>
+                            While our health science knowledge base and our validator infrastructure operate as
+                            high-performance standalone modules, they are designed to converge. We are developing a
+                            proprietary logic gate where verified network participation meets behavioral health data.
+                            This isn't just about learning or earning—it's about the sovereignty of information.
+                        </p>
+                        <p style="margin-top: 15px; font-style: italic; color: #93c5fd;">
+                            The bridge is being built. The connection is intentional. The future is Vital.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="container">
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="verification-link">Verification URL</a>
+                    <a href="#" class="footer-link" id="blockchain-link">Blockchain</a>
+                    <a href="#" class="footer-link" id="socarxiv-link">SocArXiv</a>
+                    <a href="https://vitalgnosis.com/vera-validators" class="footer-link">All Tokens</a>
+                    <a href="https://vitalgnosis.com" class="footer-link">VitalGnosis Home</a>
+                    <a href="https://vitalgnosis.com/health-courses" class="footer-link">Health Sciences</a>
+                </div>
+
+                <div class="social-share">
+                    <a href="#" class="share-btn" id="twitter-share" target="_blank" title="Share on Twitter">𝕏</a>
+                    <a href="#" class="share-btn" id="linkedin-share" target="_blank" title="Share on LinkedIn">in</a>
+                    <a href="#" class="share-btn" id="email-share" target="_blank" title="Share via Email">✉</a>
+                </div>
+
+                <p class="text-center" style="margin-top: 30px; color: var(--text-secondary);">
+                    © 2026 VitalGnosis. Synthesizing Biological Vitality with Digital Truth.<br>
+                    Part of the VERA Validation Ecosystem.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h2 style="color: var(--success-color); margin-bottom: 20px;">✓ Request Submitted!</h2>
+            <p>Thank you for your interest. We'll review your request and send the reproducibility package to your email
+                within 24-48 hours.</p>
+            <button class="btn btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px;">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get token ID from URL parameter or pathname
+        function getTokenIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenIdParam = urlParams.get('token');
+
+            if (tokenIdParam) {
+                return tokenIdParam;
+            }
+
+            // Try to extract from pathname (e.g., /vera/VERA-M045-20260101)
+            const pathParts = window.location.pathname.split('/');
+            const tokenFromPath = pathParts.find(part => part.startsWith('VERA-M'));
+
+            return tokenFromPath || 'VERA-M045-20260101'; // Default fallback
+        }
+
+        const TOKEN_ID = getTokenIdFromUrl();
+        const API_BASE = 'https://backend.vitalgnosis.com';
+        let currentToken = null;
+        let currentCitationFormat = 'apa';
+
+        // Load token data on page load
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadTokenData();
+        });
+
+        async function loadTokenData() {
+            try {
+                const response = await fetch(`${API_BASE}/api/vera/token/${TOKEN_ID}`);
+
+                if (!response.ok) {
+                    throw new Error('Token not found');
+                }
+
+                currentToken = await response.json();
+                populatePage(currentToken);
+                loadRelatedTokens();
+                trackPageView();
+
+                // Hide loading, show content
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error loading token:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div style="text-align: center;">
+                        <h2>Token Not Found</h2>
+                        <p>The requested token ${TOKEN_ID} could not be loaded.</p>
+                        <a href="https://vitalgnosis.com/vera-validators" class="btn btn-primary">
+                            View All Tokens
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function populatePage(token) {
+            // Update page title and meta tags
+            document.title = `${token.title} - VERA Token ${token.token_id}`;
+            document.getElementById('page-title').textContent = `${token.title} - VERA Token`;
+            document.getElementById('meta-description').content = token.description;
+            document.getElementById('meta-keywords').content = `${token.domain}, ${token.subdomain}, VERA, research validation`;
+
+            // Open Graph tags
+            document.getElementById('og-title').content = token.title;
+            document.getElementById('og-description').content = token.description;
+            document.getElementById('og-url').content = token.verification_url;
+
+            // Twitter tags
+            document.getElementById('twitter-title').content = token.title;
+            document.getElementById('twitter-description').content = token.description;
+
+            // Schema.org structured data
+            const schemaData = {
+                "@context": "https://schema.org",
+                "@type": "ScholarlyArticle",
+                "headline": token.title,
+                "description": token.description,
+                "author": {
+                    "@type": "Organization",
+                    "name": token.validator
+                },
+                "datePublished": token.validation_date,
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "VitalGnosis"
+                },
+                "citation": token.citations.apa,
+                "keywords": `${token.domain}, ${token.subdomain}`
+            };
+            document.getElementById('schema-data').textContent = JSON.stringify(schemaData, null, 2);
+
+            // Hero section
+            document.getElementById('token-id').textContent = token.token_id;
+            document.getElementById('confidence').textContent = `${token.confidence}%`;
+            document.getElementById('token-title').textContent = token.title;
+            document.getElementById('domain-pill').textContent = token.domain;
+            document.getElementById('subdomain-pill').textContent = token.subdomain;
+
+            const statusPill = document.getElementById('status-pill');
+            statusPill.textContent = token.status;
+            statusPill.className = `meta-pill status-${token.status}`;
+
+            document.getElementById('stake-pill').textContent = `${token.stake_amount.toLocaleString()} VERA Staked`;
+            document.getElementById('pdf-download').href = token.public_pdf;
+
+            // Stats bar
+            document.getElementById('stat-confidence').textContent = `${token.confidence}%`;
+            document.getElementById('stat-stake').textContent = token.stake_amount.toLocaleString();
+            document.getElementById('stat-status').textContent = token.status;
+            document.getElementById('stat-reproducibility').textContent = token.impact_metrics.reproducibility_score;
+
+            // Content sections
+            document.getElementById('description').textContent = token.description;
+            document.getElementById('methodology').textContent = token.methodology;
+
+            // Key findings
+            const findingsGrid = document.getElementById('findings-grid');
+            findingsGrid.innerHTML = '';
+            token.key_findings.forEach((finding, index) => {
+                const icons = ['🔬', '📊', '🎯', '✅'];
+                const card = document.createElement('div');
+                card.className = 'finding-card';
+                card.innerHTML = `
+                    <div class="finding-icon">${icons[index % icons.length]}</div>
+                    <div class="finding-text">${finding}</div>
+                `;
+                findingsGrid.appendChild(card);
+            });
+
+            // Citations
+            updateCitationText();
+
+            // Reproducibility package
+            const packageList = document.getElementById('package-list');
+            packageList.innerHTML = '';
+            token.protected_materials.forEach(material => {
+                const item = document.createElement('div');
+                item.className = 'package-item';
+                item.innerHTML = `
+                    <span class="package-icon">📦</span>
+                    <span>${material}</span>
+                `;
+                packageList.appendChild(item);
+            });
+
+            // NFT benefits
+            const nftList = document.getElementById('nft-benefits-list');
+            nftList.innerHTML = '';
+            token.nft_benefits.forEach(benefit => {
+                const item = document.createElement('div');
+                item.className = 'package-item';
+                item.innerHTML = `
+                    <span class="package-icon">💎</span>
+                    <span>${benefit}</span>
+                `;
+                nftList.appendChild(item);
+            });
+
+            // Footer links
+            document.getElementById('verification-link').href = token.verification_url;
+            document.getElementById('blockchain-link').href = token.blockchain_url;
+            if (token.socarxiv_url) {
+                document.getElementById('socarxiv-link').href = token.socarxiv_url;
+            } else {
+                document.getElementById('socarxiv-link').style.display = 'none';
+            }
+
+            // Social sharing
+            setupSocialSharing(token);
+        }
+
+        function updateCitationText() {
+            if (!currentToken) return;
+
+            const citationText = document.getElementById('citation-text');
+            const citations = currentToken.citations;
+
+            // Add MLA and Chicago if not present (fallback generation)
+            if (!citations.mla) {
+                citations.mla = `VitalGnosis Research Team. "${currentToken.title}." VERA Token ${currentToken.token_id}, 2026, ${currentToken.verification_url}.`;
+            }
+            if (!citations.chicago) {
+                citations.chicago = `VitalGnosis Research Team. "${currentToken.title}." VERA Token ${currentToken.token_id}. VitalGnosis, 2026. ${currentToken.verification_url}.`;
+            }
+
+            citationText.textContent = citations[currentCitationFormat];
+        }
+
+        function switchCitationFormat(format) {
+            currentCitationFormat = format;
+
+            // Update active tab
+            document.querySelectorAll('.citation-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-format="${format}"]`).classList.add('active');
+
+            updateCitationText();
+        }
+
+        async function copyCitation() {
+            const citationText = document.getElementById('citation-text').textContent;
+
+            try {
+                await navigator.clipboard.writeText(citationText);
+
+                // Show success message
+                const successMsg = document.getElementById('copy-success');
+                successMsg.classList.add('show');
+
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 3000);
+
+                // Track citation copy
+                trackEvent('citation_copy', { format: currentCitationFormat });
+
+            } catch (err) {
+                alert('Failed to copy citation. Please select and copy manually.');
+            }
+        }
+
+        async function loadRelatedTokens() {
+            try {
+                const response = await fetch(`${API_BASE}/api/vera/token/${TOKEN_ID}/related`);
+                if (!response.ok) return;
+
+                const data = await response.json();
+                const relatedGrid = document.getElementById('related-tokens');
+                relatedGrid.innerHTML = '';
+
+                data.related_tokens.slice(0, 4).forEach(token => {
+                    const card = document.createElement('a');
+                    card.href = `?token=${token.token_id}`;
+                    card.className = 'related-card';
+                    card.innerHTML = `
+                        <h3>${token.title}</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px;">
+                            ${token.description.substring(0, 100)}...
+                        </p>
+                        <div class="related-meta">
+                            <span>${token.confidence}% confidence</span>
+                            <span>${token.stake_amount.toLocaleString()} VERA</span>
+                        </div>
+                    `;
+                    relatedGrid.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error('Error loading related tokens:', error);
+            }
+        }
+
+        async function submitReproRequest(event) {
+            event.preventDefault();
+
+            const formData = {
+                form_type: 'reproducibility_request',
+                token_id: TOKEN_ID,
+                email: document.getElementById('request-email').value,
+                name: document.getElementById('request-name').value,
+                institution: document.getElementById('request-institution').value,
+                purpose: document.getElementById('request-purpose').value,
+                message: document.getElementById('request-message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/vera/forms/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    document.getElementById('success-modal').classList.add('show');
+                    document.getElementById('repro-request-form').reset();
+                    trackEvent('form_submit', { form_type: 'reproducibility_request' });
+                } else {
+                    alert('There was an error submitting your request. Please try again.');
+                }
+            } catch (error) {
+                console.error('Form submission error:', error);
+                alert('There was an error submitting your request. Please try again.');
+            }
+        }
+
+        function setupSocialSharing(token) {
+            const encodedUrl = encodeURIComponent(token.verification_url);
+            const encodedTitle = encodeURIComponent(token.title);
+            const encodedText = encodeURIComponent(`Check out this validated research: ${token.title}`);
+
+            document.getElementById('twitter-share').href =
+                `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
+
+            document.getElementById('linkedin-share').href =
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+            document.getElementById('email-share').href =
+                `mailto:?subject=${encodedTitle}&body=${encodedUrl}`;
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.remove('show');
+        }
+
+        async function trackEvent(eventType, metadata = {}) {
+            try {
+                await fetch(`${API_BASE}/api/vera/analytics/track`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        event_type: eventType,
+                        token_id: TOKEN_ID,
+                        metadata: metadata,
+                        timestamp: new Date().toISOString()
+                    })
+                });
+            } catch (error) {
+                // Silently fail - analytics shouldn't break user experience
+                console.warn('Analytics tracking failed:', error);
+            }
+        }
+
+        function trackPageView() {
+            trackEvent('page_view');
+        }
+    </script>
+</body>
+
+</html>

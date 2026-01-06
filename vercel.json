@@ -1,0 +1,38 @@
+{
+    "buildCommand": null,
+    "outputDirectory": "public",
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "rewrites": [
+        {
+            "source": "/vera",
+            "destination": "/vera/index.html"
+        },
+        {
+            "source": "/vera/:token",
+            "destination": "/vera/index.html"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/vera/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=3600, s-maxage=3600"
+                },
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "https://vitalgnosis.com",
+            "permanent": false
+        }
+    ]
+}
