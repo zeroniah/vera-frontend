@@ -473,6 +473,67 @@
             margin-top: 15px;
         }
 
+        /* Token Preview Card */
+        .token-preview-card {
+            position: fixed;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 400px;
+            min-width: 300px;
+            animation: fadeIn 0.2s ease;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .token-preview-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .preview-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preview-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .preview-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(96, 165, 250, 0.1);
+            color: var(--primary-color);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 5px;
+        }
+
         /* Footer */
         .footer {
             background: var(--surface);
@@ -757,9 +818,17 @@
 
                         <div class="citation-content">
                             <div class="citation-text" id="citation-text"></div>
-                            <button class="btn btn-primary copy-button" onclick="copyCitation()">
-                                📋 Copy to Clipboard
-                            </button>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button class="btn btn-primary copy-button" onclick="copyCitation()" style="flex: 1;">
+                                    📋 Copy to Clipboard
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadCitation()" style="flex: 1;">
+                                    💾 Download
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadAllCitations()" style="flex: 1;">
+                                    📦 Download All Formats
+                                </button>
+                            </div>
                             <div class="copy-success" id="copy-success">✓ Citation copied to clipboard!</div>
                         </div>
                     </div>
@@ -907,6 +976,10 @@
                 </div>
 
                 <div class="social-share">
+                    <button class="share-btn" onclick="openShareModal()" title="Share this research"
+                        style="background: var(--primary-color); color: white; border: none; cursor: pointer; font-size: 1rem; padding: 10px 20px; border-radius: 8px;">
+                        📤 Share
+                    </button>
                     <a href="#" class="share-btn" id="twitter-share" target="_blank" title="Share on Twitter">𝕏</a>
                     <a href="#" class="share-btn" id="linkedin-share" target="_blank" title="Share on LinkedIn">in</a>
                     <a href="#" class="share-btn" id="email-share" target="_blank" title="Share via Email">✉</a>
@@ -930,6 +1003,64 @@
             <button class="btn btn-primary" onclick="closeModal()" style="width: 100%; margin-top: 20px;">
                 Close
             </button>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="share-modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close" onclick="closeShareModal()">×</button>
+            <h2 style="margin-bottom: 20px;">📤 Share This Research</h2>
+
+            <div style="background: var(--surface); padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                <h3 id="share-title" style="font-size: 1.1rem; margin-bottom: 10px;"></h3>
+                <div
+                    style="display: flex; gap: 10px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <span id="share-confidence"></span>
+                    <span>•</span>
+                    <span id="share-domain"></span>
+                </div>
+                <p id="share-description" style="font-size: 0.9rem; color: var(--text-secondary);"></p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label class="form-label">Share URL:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="share-url-input" readonly
+                        style="flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 8px; background: var(--surface);">
+                    <button class="btn btn-primary" onclick="copyShareUrl()" style="white-space: nowrap;">
+                        📋 Copy Link
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label class="form-label">Share on social media:</label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    <a id="twitter-share-modal" href="#" target="_blank" class="btn btn-secondary"
+                        style="text-align: center;">
+                        𝕏 Twitter
+                    </a>
+                    <a id="linkedin-share-modal" href="#" target="_blank" class="btn btn-secondary"
+                        style="text-align: center;">
+                        in LinkedIn
+                    </a>
+                    <a id="reddit-share-modal" href="#" target="_blank" class="btn btn-secondary"
+                        style="text-align: center;">
+                        📱 Reddit
+                    </a>
+                    <a id="email-share-modal" href="#" target="_blank" class="btn btn-secondary"
+                        style="text-align: center;">
+                        ✉ Email
+                    </a>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding-top: 20px; border-top: 1px solid var(--border);">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Help spread validated research to the academic community
+                </p>
+            </div>
         </div>
     </div>
 
@@ -1167,6 +1298,112 @@
             }
         }
 
+        function downloadCitation() {
+            if (!currentToken) return;
+
+            const citations = currentToken.citations;
+            let content = '';
+            let filename = '';
+
+            // Format-specific download
+            if (currentCitationFormat === 'bibtex') {
+                content = citations.bibtex;
+                filename = `${currentToken.token_id}.bib`;
+            } else if (currentCitationFormat === 'apa') {
+                content = citations.apa;
+                filename = `${currentToken.token_id}_APA.txt`;
+            } else if (currentCitationFormat === 'mla') {
+                content = citations.mla;
+                filename = `${currentToken.token_id}_MLA.txt`;
+            } else if (currentCitationFormat === 'chicago') {
+                content = citations.chicago;
+                filename = `${currentToken.token_id}_Chicago.txt`;
+            }
+
+            // Create blob and download
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Track download
+            trackEvent('citation_download', {
+                format: currentCitationFormat,
+                token_id: TOKEN_ID
+            });
+
+            // Show success message
+            const successMsg = document.getElementById('copy-success');
+            successMsg.textContent = '✓ Citation downloaded!';
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+                successMsg.textContent = '✓ Citation copied to clipboard!';
+            }, 3000);
+        }
+
+        function downloadAllCitations() {
+            if (!currentToken) return;
+
+            const citations = currentToken.citations;
+            const tokenId = currentToken.token_id;
+
+            // Create combined text file with all citation formats
+            const allFormats = `VERA Token Citations: ${tokenId}\n` +
+                `Title: ${currentToken.title}\n` +
+                `Generated: ${new Date().toISOString()}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `APA 7th Edition:\n` +
+                `${citations.apa}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `BibTeX Format:\n` +
+                `${citations.bibtex}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `MLA 9th Edition:\n` +
+                `${citations.mla}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `Chicago 17th Edition:\n` +
+                `${citations.chicago}\n`;
+
+            // Download combined file
+            const blob = new Blob([allFormats], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${tokenId}_all_citations.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // Track download
+            trackEvent('citation_download_all', {
+                token_id: TOKEN_ID
+            });
+
+            // Show success message
+            const successMsg = document.getElementById('copy-success');
+            successMsg.textContent = '✓ All citations downloaded!';
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+                successMsg.textContent = '✓ Citation copied to clipboard!';
+            }, 3000);
+        }
+
         async function loadRelatedTokens() {
             try {
                 const response = await fetch(`${API_BASE}/api/vera/token/${TOKEN_ID}/related`);
@@ -1190,12 +1427,110 @@
                             <span>${token.stake_amount.toLocaleString()} VERA</span>
                         </div>
                     `;
+
+                    // Add hover preview
+                    card.addEventListener('mouseenter', (e) => showTokenPreview(token, e));
+                    card.addEventListener('mouseleave', hideTokenPreview);
+                    card.addEventListener('mousemove', moveTokenPreview);
+
                     relatedGrid.appendChild(card);
                 });
 
             } catch (error) {
                 console.error('Error loading related tokens:', error);
             }
+        }
+
+        let currentPreview = null;
+        let previewTimeout = null;
+
+        function showTokenPreview(token, event) {
+            // Clear any existing preview timeout
+            if (previewTimeout) clearTimeout(previewTimeout);
+
+            // Delay showing preview slightly to avoid flicker
+            previewTimeout = setTimeout(() => {
+                // Remove any existing preview
+                hideTokenPreview();
+
+                const preview = document.createElement('div');
+                preview.className = 'token-preview-card';
+                preview.id = 'token-preview';
+
+                preview.innerHTML = `
+                    <h4>${token.title}</h4>
+                    <div class="preview-stats">
+                        <span style="font-weight: 600; color: var(--primary-color);">${token.confidence}% confidence</span>
+                        <span>${token.stake_amount.toLocaleString()} VERA</span>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <span class="preview-badge">${token.domain}</span>
+                        <span class="preview-badge">${token.subdomain}</span>
+                    </div>
+                    <p class="preview-description">
+                        ${token.description.substring(0, 200)}${token.description.length > 200 ? '...' : ''}
+                    </p>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic;">
+                        Click card to view full details →
+                    </div>
+                `;
+
+                document.body.appendChild(preview);
+                currentPreview = preview;
+
+                // Position preview
+                positionPreview(event);
+            }, 300); // 300ms delay before showing
+        }
+
+        function hideTokenPreview() {
+            if (previewTimeout) {
+                clearTimeout(previewTimeout);
+                previewTimeout = null;
+            }
+
+            if (currentPreview) {
+                currentPreview.remove();
+                currentPreview = null;
+            }
+        }
+
+        function moveTokenPreview(event) {
+            if (currentPreview) {
+                positionPreview(event);
+            }
+        }
+
+        function positionPreview(event) {
+            if (!currentPreview) return;
+
+            const preview = currentPreview;
+            const offset = 20;
+
+            // Get viewport dimensions
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const previewRect = preview.getBoundingClientRect();
+
+            let left = event.clientX + offset;
+            let top = event.clientY + offset;
+
+            // Adjust if preview would go off right edge
+            if (left + previewRect.width > viewportWidth) {
+                left = event.clientX - previewRect.width - offset;
+            }
+
+            // Adjust if preview would go off bottom edge
+            if (top + previewRect.height > viewportHeight) {
+                top = event.clientY - previewRect.height - offset;
+            }
+
+            // Ensure preview doesn't go off top or left
+            left = Math.max(10, left);
+            top = Math.max(10, top);
+
+            preview.style.left = left + 'px';
+            preview.style.top = top + 'px';
         }
 
         async function submitReproRequest(event) {
@@ -1254,6 +1589,86 @@
         function closeModal() {
             document.getElementById('success-modal').classList.remove('show');
         }
+
+        function openShareModal() {
+            if (!currentToken) return;
+
+            const modal = document.getElementById('share-modal');
+
+            // Populate modal with token data
+            document.getElementById('share-title').textContent = currentToken.title;
+            document.getElementById('share-confidence').textContent = `${currentToken.confidence}% confidence`;
+            document.getElementById('share-domain').textContent = currentToken.domain;
+            document.getElementById('share-description').textContent =
+                currentToken.description.substring(0, 150) + (currentToken.description.length > 150 ? '...' : '');
+
+            // Set share URL
+            const shareUrl = currentToken.verification_url;
+            document.getElementById('share-url-input').value = shareUrl;
+
+            // Generate share URLs
+            const shareText = `Check out this validated research: ${currentToken.title}`;
+            const encodedUrl = encodeURIComponent(shareUrl);
+            const encodedText = encodeURIComponent(shareText);
+            const encodedTitle = encodeURIComponent(currentToken.title);
+
+            document.getElementById('twitter-share-modal').href =
+                `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+
+            document.getElementById('linkedin-share-modal').href =
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+
+            document.getElementById('reddit-share-modal').href =
+                `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`;
+
+            document.getElementById('email-share-modal').href =
+                `mailto:?subject=${encodedTitle}&body=${encodedText}%0A%0A${encodedUrl}`;
+
+            // Show modal
+            modal.classList.add('show');
+
+            // Track event
+            trackEvent('share_modal_open', { token_id: TOKEN_ID });
+        }
+
+        function closeShareModal() {
+            document.getElementById('share-modal').classList.remove('show');
+        }
+
+        function copyShareUrl() {
+            const urlInput = document.getElementById('share-url-input');
+            urlInput.select();
+            navigator.clipboard.writeText(urlInput.value).then(() => {
+                // Show success feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                btn.style.background = 'var(--success-color)';
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+
+                // Track event
+                trackEvent('share_url_copy', { token_id: TOKEN_ID });
+            }).catch(err => {
+                alert('Failed to copy URL. Please copy manually.');
+            });
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            const successModal = document.getElementById('success-modal');
+            const shareModal = document.getElementById('share-modal');
+
+            if (event.target === successModal) {
+                closeModal();
+            }
+            if (event.target === shareModal) {
+                closeShareModal();
+            }
+        });
 
         async function trackEvent(eventType, metadata = {}) {
             try {
