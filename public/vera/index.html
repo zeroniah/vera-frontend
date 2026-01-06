@@ -968,7 +968,8 @@
                     throw new Error('Token not found');
                 }
 
-                currentToken = await response.json();
+                const data = await response.json();
+                currentToken = data.token || data; // Handle both wrapped and unwrapped responses
                 populatePage(currentToken);
                 loadRelatedTokens();
                 trackPageView();
