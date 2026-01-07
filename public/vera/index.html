@@ -744,6 +744,9 @@
                     <button class="btn btn-primary" onclick="scrollToSection('citation')">
                         📋 Cite This Work
                     </button>
+                    <button class="btn btn-secondary" id="bookmark-button" onclick="toggleBookmark()">
+                        <span id="bookmark-icon">🔖</span> <span id="bookmark-text">Bookmark</span>
+                    </button>
                     <a class="btn btn-secondary" id="pdf-download" href="#" target="_blank">
                         📥 Download PDF
                     </a>
@@ -810,6 +813,8 @@
                                 onclick="switchCitationFormat('apa')">APA</button>
                             <button class="citation-tab" data-format="bibtex"
                                 onclick="switchCitationFormat('bibtex')">BibTeX</button>
+                            <button class="citation-tab" data-format="ris"
+                                onclick="switchCitationFormat('ris')">RIS</button>
                             <button class="citation-tab" data-format="mla"
                                 onclick="switchCitationFormat('mla')">MLA</button>
                             <button class="citation-tab" data-format="chicago"
@@ -972,6 +977,7 @@
                     <a href="#" class="footer-link" id="verification-link">Verification URL</a>
                     <a href="#" class="footer-link" id="blockchain-link">Blockchain</a>
                     <a href="#" class="footer-link" id="socarxiv-link">SocArXiv</a>
+                    <a href="#" class="footer-link" onclick="showBookmarksModal(); return false;">🔖 My Bookmarks</a>
                     <a href="https://vitalgnosis.com/vera-validators" class="footer-link">All Tokens</a>
                     <a href="https://vitalgnosis.com" class="footer-link">VitalGnosis Home</a>
                     <a href="https://vitalgnosis.com/health-courses" class="footer-link">Health Sciences</a>
@@ -1058,10 +1064,42 @@
                 </div>
             </div>
 
+            <div style="margin-bottom: 25px;">
+                <label class="form-label">📱 Mobile Sharing QR Code:</label>
+                <div
+                    style="display: flex; justify-content: center; padding: 20px; background: white; border-radius: 8px; border: 2px solid var(--border);">
+                    <div id="qrcode-container"></div>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 10px;">
+                    Scan with your phone to share or view on mobile
+                </p>
+            </div>
+
             <div style="text-align: center; padding-top: 20px; border-top: 1px solid var(--border);">
                 <p style="font-size: 0.85rem; color: var(--text-secondary);">
                     Help spread validated research to the academic community
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookmarks Modal -->
+    <div class="modal" id="bookmarks-modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeBookmarksModal()">×</button>
+            <h2 style="margin-bottom: 20px;">🔖 My Bookmarked Research</h2>
+
+            <div id="bookmarks-list" style="max-height: 500px; overflow-y: auto;">
+                <!-- Bookmarks will be inserted here -->
+            </div>
+
+            <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <button class="btn btn-secondary" onclick="exportBookmarks()">
+                    📥 Export Bookmarks
+                </button>
+                <button class="btn btn-secondary" onclick="clearAllBookmarks()" style="margin-left: 10px;">
+                    🗑️ Clear All
+                </button>
             </div>
         </div>
     </div>
@@ -1247,6 +1285,9 @@
 
             // Social sharing
             setupSocialSharing(token);
+
+            // Initialize bookmark button state
+            initBookmarkButton();
         }
 
         function updateCitationText() {
@@ -1255,12 +1296,17 @@
             const citationText = document.getElementById('citation-text');
             const citations = currentToken.citations;
 
-            // Add MLA and Chicago if not present (fallback generation)
+            // Add MLA, Chicago, and RIS if not present (fallback generation)
             if (!citations.mla) {
                 citations.mla = `VitalGnosis Research Team. "${currentToken.title}." VERA Token ${currentToken.token_id}, 2026, ${currentToken.verification_url}.`;
             }
             if (!citations.chicago) {
                 citations.chicago = `VitalGnosis Research Team. "${currentToken.title}." VERA Token ${currentToken.token_id}. VitalGnosis, 2026. ${currentToken.verification_url}.`;
+            }
+            if (!citations.ris) {
+                // RIS format for EndNote, RefWorks, Zotero
+                const year = new Date(currentToken.validation_date).getFullYear();
+                citations.ris = `TY  - RPRT\nT1  - ${currentToken.title}\nAU  - VitalGnosis Research Team\nY1  - ${year}\nPB  - VitalGnosis\nUR  - ${currentToken.verification_url}\nKW  - ${currentToken.domain}\nKW  - ${currentToken.subdomain}\nAB  - ${currentToken.description.substring(0, 500)}\nER  -`;
             }
 
             citationText.textContent = citations[currentCitationFormat];
@@ -1311,6 +1357,9 @@
             if (currentCitationFormat === 'bibtex') {
                 content = citations.bibtex;
                 filename = `${currentToken.token_id}.bib`;
+            } else if (currentCitationFormat === 'ris') {
+                content = citations.ris;
+                filename = `${currentToken.token_id}.ris`;
             } else if (currentCitationFormat === 'apa') {
                 content = citations.apa;
                 filename = `${currentToken.token_id}_APA.txt`;
@@ -1368,6 +1417,16 @@
                 `================================================================\n` +
                 `\n` +
                 `BibTeX Format:\n` +
+                `${citations.bibtex}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `RIS Format (EndNote/RefWorks):\n` +
+                `${citations.ris}\n` +
+                `\n` +
+                `================================================================\n` +
+                `\n` +
+                `MLA Format:\n` +
                 `${citations.bibtex}\n` +
                 `\n` +
                 `================================================================\n` +
@@ -1626,6 +1685,21 @@
             document.getElementById('email-share-modal').href =
                 `mailto:?subject=${encodedTitle}&body=${encodedText}%0A%0A${encodedUrl}`;
 
+            // Generate QR code
+            const qrcodeContainer = document.getElementById('qrcode-container');
+            qrcodeContainer.innerHTML = ''; // Clear previous QR code
+
+            if (typeof QRCode !== 'undefined') {
+                new QRCode(qrcodeContainer, {
+                    text: shareUrl,
+                    width: 200,
+                    height: 200,
+                    colorDark: '#2563eb',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+
             // Show modal
             modal.classList.add('show');
 
@@ -1659,16 +1733,240 @@
             });
         }
 
+        // Bookmark System
+        function loadBookmarks() {
+            try {
+                const bookmarks = localStorage.getItem('vera_bookmarks');
+                return bookmarks ? JSON.parse(bookmarks) : [];
+            } catch (e) {
+                console.error('Failed to load bookmarks:', e);
+                return [];
+            }
+        }
+
+        function saveBookmarks(bookmarks) {
+            try {
+                localStorage.setItem('vera_bookmarks', JSON.stringify(bookmarks));
+            } catch (e) {
+                console.error('Failed to save bookmarks:', e);
+            }
+        }
+
+        function isBookmarked(tokenId) {
+            const bookmarks = loadBookmarks();
+            return bookmarks.some(b => b.token_id === tokenId);
+        }
+
+        function toggleBookmark() {
+            if (!currentToken) return;
+
+            const bookmarks = loadBookmarks();
+            const index = bookmarks.findIndex(b => b.token_id === currentToken.token_id);
+
+            if (index > -1) {
+                // Remove bookmark
+                bookmarks.splice(index, 1);
+                updateBookmarkButton(false);
+
+                // Show success message
+                const successMsg = document.getElementById('copy-success');
+                successMsg.textContent = '✓ Bookmark removed!';
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                    successMsg.textContent = '✓ Citation copied to clipboard!';
+                }, 2000);
+
+                trackEvent('bookmark_remove', { token_id: currentToken.token_id });
+            } else {
+                // Add bookmark
+                const bookmark = {
+                    token_id: currentToken.token_id,
+                    title: currentToken.title,
+                    domain: currentToken.domain,
+                    confidence: currentToken.confidence,
+                    verification_url: currentToken.verification_url,
+                    bookmarked_at: new Date().toISOString()
+                };
+                bookmarks.push(bookmark);
+                updateBookmarkButton(true);
+
+                // Show success message
+                const successMsg = document.getElementById('copy-success');
+                successMsg.textContent = '✓ Bookmarked!';
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                    successMsg.textContent = '✓ Citation copied to clipboard!';
+                }, 2000);
+
+                trackEvent('bookmark_add', { token_id: currentToken.token_id });
+            }
+
+            saveBookmarks(bookmarks);
+        }
+
+        function updateBookmarkButton(bookmarked) {
+            const icon = document.getElementById('bookmark-icon');
+            const text = document.getElementById('bookmark-text');
+            const button = document.getElementById('bookmark-button');
+
+            if (bookmarked) {
+                icon.textContent = '✅';
+                text.textContent = 'Bookmarked';
+                button.style.background = 'var(--success-color)';
+                button.style.borderColor = 'var(--success-color)';
+                button.style.color = 'white';
+            } else {
+                icon.textContent = '🔖';
+                text.textContent = 'Bookmark';
+                button.style.background = '';
+                button.style.borderColor = '';
+                button.style.color = '';
+            }
+        }
+
+        function initBookmarkButton() {
+            if (!currentToken) return;
+            const bookmarked = isBookmarked(currentToken.token_id);
+            updateBookmarkButton(bookmarked);
+        }
+
+        function showBookmarksModal() {
+            const modal = document.getElementById('bookmarks-modal');
+            const bookmarksList = document.getElementById('bookmarks-list');
+            const bookmarks = loadBookmarks();
+
+            if (bookmarks.length === 0) {
+                bookmarksList.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                        <p style="font-size: 3rem; margin-bottom: 10px;">📖</p>
+                        <p style="font-size: 1.1rem;">No bookmarks yet</p>
+                        <p style="font-size: 0.9rem;">Click the 🔖 Bookmark button on any token to save it for later</p>
+                    </div>
+                `;
+            } else {
+                bookmarksList.innerHTML = bookmarks.map(bookmark => `
+                    <div style="background: var(--surface); padding: 20px; border-radius: 8px; margin-bottom: 15px; border: 2px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                            <div style="flex: 1;">
+                                <h3 style="font-size: 1.1rem; margin-bottom: 8px;">
+                                    <a href="/vera?token=${bookmark.token_id}" style="color: var(--primary-color); text-decoration: none;">
+                                        ${bookmark.title}
+                                    </a>
+                                </h3>
+                                <div style="display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-secondary);">
+                                    <span>${bookmark.token_id}</span>
+                                    <span>•</span>
+                                    <span>${bookmark.confidence}% confidence</span>
+                                    <span>•</span>
+                                    <span>${bookmark.domain}</span>
+                                </div>
+                            </div>
+                            <button onclick="removeBookmarkFromModal('${bookmark.token_id}')" 
+                                class="btn btn-secondary" 
+                                style="padding: 8px 15px; font-size: 0.85rem; white-space: nowrap;">
+                                Remove
+                            </button>
+                        </div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 10px;">
+                            Bookmarked: ${new Date(bookmark.bookmarked_at).toLocaleDateString()}
+                        </p>
+                    </div>
+                `).join('');
+            }
+
+            modal.classList.add('show');
+            trackEvent('bookmarks_modal_open', { count: bookmarks.length });
+        }
+
+        function closeBookmarksModal() {
+            document.getElementById('bookmarks-modal').classList.remove('show');
+        }
+
+        function removeBookmarkFromModal(tokenId) {
+            const bookmarks = loadBookmarks();
+            const filtered = bookmarks.filter(b => b.token_id !== tokenId);
+            saveBookmarks(filtered);
+
+            // Update current page button if we're on that token
+            if (currentToken && currentToken.token_id === tokenId) {
+                updateBookmarkButton(false);
+            }
+
+            // Refresh modal
+            showBookmarksModal();
+
+            trackEvent('bookmark_remove', { token_id: tokenId, from: 'modal' });
+        }
+
+        function exportBookmarks() {
+            const bookmarks = loadBookmarks();
+            if (bookmarks.length === 0) {
+                alert('No bookmarks to export');
+                return;
+            }
+
+            const exportData = {
+                exported_at: new Date().toISOString(),
+                version: '1.0',
+                bookmarks: bookmarks
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vera_bookmarks_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            trackEvent('bookmarks_export', { count: bookmarks.length });
+        }
+
+        function clearAllBookmarks() {
+            if (!confirm('Are you sure you want to clear all bookmarks? This cannot be undone.')) {
+                return;
+            }
+
+            const count = loadBookmarks().length;
+            localStorage.removeItem('vera_bookmarks');
+
+            // Update current page button
+            if (currentToken) {
+                updateBookmarkButton(false);
+            }
+
+            closeBookmarksModal();
+
+            // Show success message
+            const successMsg = document.getElementById('copy-success');
+            successMsg.textContent = `✓ Cleared ${count} bookmarks`;
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+                successMsg.textContent = '✓ Citation copied to clipboard!';
+            }, 2000);
+
+            trackEvent('bookmarks_clear', { count });
+        }
+
         // Close modals when clicking outside
         window.addEventListener('click', (event) => {
             const successModal = document.getElementById('success-modal');
             const shareModal = document.getElementById('share-modal');
+            const bookmarksModal = document.getElementById('bookmarks-modal');
 
             if (event.target === successModal) {
                 closeModal();
             }
             if (event.target === shareModal) {
                 closeShareModal();
+            }
+            if (event.target === bookmarksModal) {
+                closeBookmarksModal();
             }
         });
 
@@ -1694,6 +1992,9 @@
             trackEvent('page_view');
         }
     </script>
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 </body>
 
 </html>
