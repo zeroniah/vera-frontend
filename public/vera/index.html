@@ -1210,14 +1210,15 @@
             statusPill.textContent = token.status;
             statusPill.className = `meta-pill status-${token.status}`;
 
-            document.getElementById('stake-pill').textContent = `${token.stake_amount.toLocaleString()} VERA Staked`;
-            document.getElementById('pdf-download').href = token.public_pdf;
+            const stakeAmount = token.stake_amount || 0;
+            document.getElementById('stake-pill').textContent = `${stakeAmount.toLocaleString()} VERA Staked`;
+            document.getElementById('pdf-download').href = token.public_pdf || '#';
 
             // Stats bar
-            document.getElementById('stat-confidence').textContent = `${token.confidence}%`;
-            document.getElementById('stat-stake').textContent = token.stake_amount.toLocaleString();
-            document.getElementById('stat-status').textContent = token.status;
-            document.getElementById('stat-reproducibility').textContent = token.impact_metrics.reproducibility_score;
+            document.getElementById('stat-confidence').textContent = `${token.confidence || 0}%`;
+            document.getElementById('stat-stake').textContent = stakeAmount.toLocaleString();
+            document.getElementById('stat-status').textContent = token.status || 'Unknown';
+            document.getElementById('stat-reproducibility').textContent = token.impact_metrics?.reproducibility_score || 0;
 
             // Content sections
             document.getElementById('description').textContent = token.description;
@@ -1475,17 +1476,25 @@
                 relatedGrid.innerHTML = '';
 
                 data.related_tokens.slice(0, 4).forEach(token => {
+                    // Validate token data
+                    if (!token || !token.token_id || !token.title) return;
+
                     const card = document.createElement('a');
                     card.href = `?token=${token.token_id}`;
                     card.className = 'related-card';
+
+                    const stakeAmount = token.stake_amount ? token.stake_amount.toLocaleString() : '0';
+                    const confidence = token.confidence || 0;
+                    const description = token.description || 'No description available';
+
                     card.innerHTML = `
                         <h3>${token.title}</h3>
                         <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px;">
-                            ${token.description.substring(0, 100)}...
+                            ${description.substring(0, 100)}...
                         </p>
                         <div class="related-meta">
-                            <span>${token.confidence}% confidence</span>
-                            <span>${token.stake_amount.toLocaleString()} VERA</span>
+                            <span>${confidence}% confidence</span>
+                            <span>${stakeAmount} VERA</span>
                         </div>
                     `;
 
@@ -1511,6 +1520,9 @@
 
             // Delay showing preview slightly to avoid flicker
             previewTimeout = setTimeout(() => {
+                // Validate token data
+                if (!token || !token.title) return;
+
                 // Remove any existing preview
                 hideTokenPreview();
 
@@ -1518,18 +1530,24 @@
                 preview.className = 'token-preview-card';
                 preview.id = 'token-preview';
 
+                const stakeAmount = token.stake_amount ? token.stake_amount.toLocaleString() : '0';
+                const confidence = token.confidence || 0;
+                const domain = token.domain || 'Unknown';
+                const subdomain = token.subdomain || 'Unknown';
+                const description = token.description || 'No description available';
+
                 preview.innerHTML = `
                     <h4>${token.title}</h4>
                     <div class="preview-stats">
-                        <span style="font-weight: 600; color: var(--primary-color);">${token.confidence}% confidence</span>
-                        <span>${token.stake_amount.toLocaleString()} VERA</span>
+                        <span style="font-weight: 600; color: var(--primary-color);">${confidence}% confidence</span>
+                        <span>${stakeAmount} VERA</span>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <span class="preview-badge">${token.domain}</span>
-                        <span class="preview-badge">${token.subdomain}</span>
+                        <span class="preview-badge">${domain}</span>
+                        <span class="preview-badge">${subdomain}</span>
                     </div>
                     <p class="preview-description">
-                        ${token.description.substring(0, 200)}${token.description.length > 200 ? '...' : ''}
+                        ${description.substring(0, 200)}${description.length > 200 ? '...' : ''}
                     </p>
                     <div style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic;">
                         Click card to view full details →
@@ -1690,14 +1708,22 @@
             qrcodeContainer.innerHTML = ''; // Clear previous QR code
 
             if (typeof QRCode !== 'undefined') {
-                new QRCode(qrcodeContainer, {
-                    text: shareUrl,
-                    width: 200,
-                    height: 200,
-                    colorDark: '#2563eb',
-                    colorLight: '#ffffff',
-                    correctLevel: QRCode.CorrectLevel.H
-                });
+                try {
+                    new QRCode(qrcodeContainer, {
+                        text: shareUrl,
+                        width: 200,
+                        height: 200,
+                        colorDark: '#2563eb',
+                        colorLight: '#ffffff',
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch (error) {
+                    console.warn('QR code generation failed:', error);
+                    qrcodeContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center;">QR code unavailable</p>';
+                }
+            } else {
+                console.warn('QR code library not loaded');
+                qrcodeContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center;">QR code library not loaded</p>';
             }
 
             // Show modal
@@ -1993,7 +2019,8 @@
         }
     </script>
     <!-- QR Code Generator Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+        onerror="console.warn('QR code library failed to load - QR feature will be disabled')"></script>
 
 </body>
 
